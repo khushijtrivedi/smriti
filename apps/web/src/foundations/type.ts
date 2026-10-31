@@ -5,7 +5,10 @@ export type Move =
   | ['insert']
   | ['pullUp']
   | ['through', number]
-  | ['throughAll'];
+  | ['throughAll']
+  | ['makeRing']
+  | ['more', number]
+  | ['close'];
 
 export type HookPose = 'rest' | 'yo' | 'caught' | 'inserted' | 'insertedCaught' | 'pullingOut' | 'pulled' | 'off';
 export type Focus = 'finger' | 'throat' | 'target' | 'loop';
@@ -17,7 +20,8 @@ export interface Lesson {
   abbr: string;
   summary: string;
   row: boolean;
-  postHeight: number;
+  ring?: boolean; // worked into a magic ring
+  links: number;
   moves: Move[];
 }
 
@@ -28,8 +32,11 @@ export interface LessonStep {
   leg: boolean;
   done: boolean;
   chains: number;
+  sliding: number;
+  ringSts: number; // stitches worked into the magic ring
+  closed: boolean; // magic ring pulled closed
   pose: HookPose;
   focus?: Focus;
   arrow?: Arrow;
-   sliding: number; 
+  built: number;
 }

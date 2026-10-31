@@ -7,8 +7,24 @@ export const lessons: Lesson[] = [
     abbr: 'ch',
     summary: 'The base of most crochet. Each loop is pulled through the one before.',
     row: false,
-    postHeight: 0,
+    links: 0,
    moves: [['hold'], ['yo'], ['catch'], ['through', 1], ['yo'], ['catch'], ['through', 1]],
+  },
+    {
+    slug: 'magic-ring',
+    name: 'Magic ring',
+    abbr: 'MR',
+    summary: 'A closed start for working in the round. The base of every amigurumi.',
+    row: false,
+    ring: true,
+    links: 1,
+    moves: [
+      ['makeRing'],
+      ['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 1],
+      ['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 2],
+      ['more', 5],
+      ['close'],
+    ],
   },
   {
     slug: 'slip-stitch',
@@ -16,7 +32,7 @@ export const lessons: Lesson[] = [
     abbr: 'sl st',
     summary: 'The flattest stitch. Used to join and to move along without adding height.',
     row: true,
-    postHeight: 0.12,
+    links: 1,
     moves: [['insert'], ['yo'], ['throughAll']],
   },
   {
@@ -25,7 +41,7 @@ export const lessons: Lesson[] = [
     abbr: 'sc',
     summary: 'The main amigurumi stitch. Short and tight.',
     row: true,
-    postHeight: 0.35,
+   links: 1,
     moves: [['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 2]],
   },
   {
@@ -34,7 +50,7 @@ export const lessons: Lesson[] = [
     abbr: 'hdc',
     summary: 'Between single and double in height.',
     row: true,
-    postHeight: 0.55,
+    links: 2,
     moves: [['yo'], ['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 3]],
   },
   {
@@ -43,7 +59,7 @@ export const lessons: Lesson[] = [
     abbr: 'dc',
     summary: 'A tall stitch, worked off two loops at a time.',
     row: true,
-    postHeight: 0.75,
+    links: 3,
     moves: [['yo'], ['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 2], ['yo'], ['through', 2]],
   },
   {
@@ -52,7 +68,7 @@ export const lessons: Lesson[] = [
     abbr: 'tr',
     summary: 'The tallest of the basics. Two yarn overs before you start.',
     row: true,
-    postHeight: 0.95,
+    links: 4,
     moves: [['yo'], ['yo'], ['insert'], ['yo'], ['pullUp'], ['yo'], ['through', 2], ['yo'], ['through', 2], ['yo'], ['through', 2]],
   },
 ];
