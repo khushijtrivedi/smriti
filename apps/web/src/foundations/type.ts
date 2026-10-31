@@ -7,9 +7,9 @@ export type Move =
   | ['through', number]
   | ['throughAll'];
 
-export type HookPose = 'rest' | 'yo' | 'caught' | 'inserted' | 'pulled' | 'off';
+export type HookPose = 'rest' | 'yo' | 'caught' | 'inserted' | 'insertedCaught' | 'pullingOut' | 'pulled' | 'off';
 export type Focus = 'finger' | 'throat' | 'target' | 'loop';
-export type Arrow = 'forward' | 'back' | 'down';
+export type Arrow = 'forward' | 'back' | 'down' | 'out';
 
 export interface Lesson {
   slug: string;

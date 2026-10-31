@@ -40,26 +40,50 @@ const BALL = new THREE.Vector3(3.9, -2.4, -2.8);
 const FINGER = new THREE.Vector3(3.0, 1.06, -0.7);
 const TARGET = new THREE.Vector3(2.0, -1.0, 0);
 const ROW_END = new THREE.Vector3(1.6, -0.95, 0);
-const PITCH_IN = -0.5;
+const PITCH_IN = -0.75;
 const loopX = (i: number) => 1.3 - i * 0.17;
 // Where the old loop sits when it comes off the tip: chains form here and stay put
 const CHAIN_TOP = new THREE.Vector3(-0.4 + 1.78, -0.2, 0.03);
 
 const IN_ROT = new THREE.Quaternion().setFromAxisAngle(Z, PITCH_IN);
 const TARGET_ROT = new THREE.Quaternion().setFromUnitVectors(Z, new THREE.Vector3(Math.cos(PITCH_IN), Math.sin(PITCH_IN), 0));
-const POSES: Record<HookPose, { pos: THREE.Vector3; rot: THREE.Quaternion }> = {
-  rest: { pos: new THREE.Vector3(0, 0, 0), rot: new THREE.Quaternion() },
-  yo: { pos: new THREE.Vector3(0.3, 0.1, 0), rot: new THREE.Quaternion() },
-  caught: { pos: new THREE.Vector3(0.3, 0.1, 0), rot: new THREE.Quaternion().setFromAxisAngle(X, -0.6) },
-  inserted: { pos: TARGET.clone().sub(new THREE.Vector3(2, 0, 0).applyQuaternion(IN_ROT)), rot: IN_ROT },
-  pulled: { pos: new THREE.Vector3(-0.4, 0, 0), rot: new THREE.Quaternion() },
-  off: { pos: new THREE.Vector3(-0.9, 0, 0), rot: new THREE.Quaternion() },
+const CATCH = new THREE.Quaternion().setFromAxisAngle(X, -0.6);
+const IN_POS = TARGET.clone().sub(new THREE.Vector3(2, 0, 0).applyQuaternion(IN_ROT));
+const IN_DIR = new THREE.Vector3(1, 0, 0).applyQuaternion(IN_ROT);
+const pose = (x: number, y: number, rot = new THREE.Quaternion()) => ({ pos: new THREE.Vector3(x, y, 0), rot });
+
+// Shared poses for working into a stitch
+const IN_POSES = {
+  inserted: { pos: IN_POS, rot: IN_ROT },
+  insertedCaught: { pos: IN_POS, rot: IN_ROT.clone().multiply(CATCH) },
+  pullingOut: { pos: IN_POS.clone().addScaledVector(IN_DIR, -0.35), rot: IN_ROT },
+};
+
+// Chain: unchanged
+const CHAIN_POSES: Record<HookPose, { pos: THREE.Vector3; rot: THREE.Quaternion }> = {
+  rest: pose(0, 0),
+  yo: pose(0.3, 0.1),
+  caught: pose(0.3, 0.1, CATCH),
+  pulled: pose(-0.4, 0),
+  off: pose(-0.9, 0),
+  ...IN_POSES,
+};
+
+// Row stitches: the hook works right above the stitch, so loops come off where the stitch forms
+const ROW_POSES: Record<HookPose, { pos: THREE.Vector3; rot: THREE.Quaternion }> = {
+  rest: pose(0.2, 0),
+  yo: pose(0.45, 0.1),
+  caught: pose(0.45, 0.1, CATCH),
+  pulled: pose(0.22, 0),
+  off: pose(-0.28, 0),
+  ...IN_POSES,
 };
 
 const ARROWS: Record<Arrow, [THREE.Vector3, THREE.Vector3]> = {
   forward: [new THREE.Vector3(1.9, -0.4, 0.35), new THREE.Vector3(2.4, -0.25, 0.35)],
   back: [new THREE.Vector3(2.3, -0.5, 0.35), new THREE.Vector3(1.6, -0.5, 0.35)],
-  down: [new THREE.Vector3(2.45, -0.2, 0.3), new THREE.Vector3(2.25, -0.75, 0.3)],
+  down: [new THREE.Vector3(2.35, -0.15, 0.3), new THREE.Vector3(2.2, -0.7, 0.3)],
+  out: [new THREE.Vector3(2.25, -0.9, 0.3), new THREE.Vector3(1.9, -0.55, 0.3)],
 };
 
 function yarnOnHook(wrap: boolean, fx: number): THREE.Vector3[] {
@@ -74,6 +98,7 @@ const ringX = (i: number, sliding: number) => (i < sliding ? 1.78 - i * 0.13 : l
 const tube = (pts: THREE.Vector3[]) => new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 80, 0.06, 10, false);
 
 export default function LessonScene({ lesson, step }: { lesson: Lesson; step: LessonStep }) {
+      const POSES = lesson.row ? ROW_POSES : CHAIN_POSES;
   const hookRef = useRef<THREE.Group>(null);
   const yarnRef = useRef<THREE.Mesh>(null);
   const linkRef = useRef<THREE.Mesh>(null);
