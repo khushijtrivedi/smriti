@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import type { PlacedStitch } from '../../packages/parser/src/type';
+import type { PlacedStitch } from './type';
 
 const BASE = new THREE.Color('#d6a1a5');
 const MARK = new THREE.Color('#ad7680');
