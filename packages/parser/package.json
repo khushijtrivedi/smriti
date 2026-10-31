@@ -1,0 +1,17 @@
+{
+  "name": "@smriti/parser",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "grammar": "peggy --format es --dts -o src/crochet.js src/crochet.peggy",
+    "test": "pnpm grammar && vitest run"
+  },
+  "devDependencies": {
+    "peggy": "^5.1.1",
+    "vitest": "^5.0.5"
+  }
+}
