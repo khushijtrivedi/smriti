@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Foundations from './pages/Foundations';
 import Patterns from './pages/Patterns';
 import Upload from './pages/Upload';
+import Lesson from './pages/Lesson';
 import './index.css';
 
 // Apply the saved theme (or the system one) before the first paint
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'foundations', element: <Foundations /> },
+      { path: 'foundations/:slug', element: <Lesson /> },
       { path: 'patterns', element: <Patterns /> },
       { path: 'upload', element: <Upload /> },
     ],
