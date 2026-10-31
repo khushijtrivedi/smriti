@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import type { PlacedStitch } from './type';
-
+import '@react-three/fiber';
 const BASE = new THREE.Color('#d6a1a5');
 const MARK = new THREE.Color('#ad7680');
 const NOW = new THREE.Color('#874f59');
