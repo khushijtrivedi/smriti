@@ -1,24 +1,35 @@
-export type Vec3 = [number, number, number];
+export type Move =
+  | ['hold']
+  | ['yo']
+  | ['catch']
+  | ['insert']
+  | ['pullUp']
+  | ['through', number]
+  | ['throughAll'];
 
-// A point on the yarn: either fixed in space, or riding on the hook
-export interface YarnPoint {
-  on: 'world' | 'hook';
-  p: Vec3;
-}
-
-export interface LessonStep {
-  text: string;
-  hook: { x: number; y: number; roll: number };
-  yarn: YarnPoint[];
-  chains: { count: number; x: number };
-  focus?: Vec3; // where to look in this step
-  arrow?: { from: Vec3; to: Vec3 }; // which way the hook moves
-}
+export type HookPose = 'rest' | 'yo' | 'caught' | 'inserted' | 'pulled' | 'off';
+export type Focus = 'finger' | 'throat' | 'target' | 'loop';
+export type Arrow = 'forward' | 'back' | 'down';
 
 export interface Lesson {
   slug: string;
   name: string;
   abbr: string;
   summary: string;
-  steps: LessonStep[];
+  row: boolean;
+  postHeight: number;
+  moves: Move[];
+}
+
+export interface LessonStep {
+  text: string;
+  loops: number;
+  wrap: boolean;
+  leg: boolean;
+  done: boolean;
+  chains: number;
+  pose: HookPose;
+  focus?: Focus;
+  arrow?: Arrow;
+   sliding: number; 
 }
