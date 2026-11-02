@@ -30,3 +30,8 @@ export interface RoundCheck {
   expected: number | null;
   ok: boolean;
 }
+export interface Part {
+  name: string | null; // null when the pattern has no headings
+  make: number; // "(make 5)"
+  rounds: Round[];
+}
