@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import type { PlacedStitch } from './type';
 import '@react-three/fiber';
-const BASE = new THREE.Color('#d6a1a5');
+
 const MARK = new THREE.Color('#ad7680');
 const NOW = new THREE.Color('#874f59');
 const HIDDEN = new THREE.Matrix4().makeScale(0, 0, 0);
@@ -40,9 +40,11 @@ interface Props {
   height: number;
   sel: number;
   step: number;
+  color?:string;
 }
 
-export default function YarnBall({ stitches, height, sel, step }: Props) {
+export default function PatternModel({ stitches, height, sel, step, color = '#d6a1a5' }: Props) {
+    const base = useMemo(() => new THREE.Color(color), [color]);
   const left = useRef<THREE.InstancedMesh>(null);
   const right = useRef<THREE.InstancedMesh>(null);
   const legL = useMemo(() => leg(-1), []);
@@ -58,12 +60,12 @@ export default function YarnBall({ stitches, height, sel, step }: Props) {
       stitches.forEach((s, i) => {
         const shown = s.round < sel || (s.round === sel && s.instr <= step);
         mesh.setMatrixAt(i, shown ? s.matrix : HIDDEN);
-        mesh.setColorAt(i, s.round === sel ? (s.instr === step ? NOW : MARK) : BASE);
+        mesh.setColorAt(i, s.round === sel ? (s.instr === step ? NOW : MARK) : base);
       });
       mesh.instanceMatrix.needsUpdate = true;
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
-  }, [stitches, sel, step]);
+  }, [stitches, sel, step,base]);
 
   return (
     <group position-y={-height / 2}>
