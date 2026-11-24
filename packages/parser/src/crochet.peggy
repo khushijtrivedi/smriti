@@ -1,5 +1,21 @@
 Pattern
-  = __ head:Round tail:(Nl r:Round { return r; })* __ { return [head, ...tail]; }
+  = __ parts:Parts __ { return parts; }
+
+// Either named parts ("Petal (make 5):" + rounds), or plain rounds as one part
+Parts
+  = head:Part tail:(Nl p:Part { return p; })* { return [head, ...tail]; }
+  / rounds:Rounds { return [{ name: null, make: 1, rounds }]; }
+
+Part
+  = h:Heading Nl rounds:Rounds { return { name: h.name, make: h.make, rounds }; }
+
+Heading
+  = name:$[^:\r\n(]+ make:Make? _ ":" _ { return { name: name.trim(), make: make ?? 1 }; }
+
+Make = "(" _ "make"i _ n:Integer _ ")" _ { return n; }
+
+Rounds
+  = head:Round tail:(Nl r:Round { return r; })* { return [head, ...tail]; }
 
 Round
   = RoundLabel n:Integer _ ":" _ items:ItemList _ count:Count? _ {
