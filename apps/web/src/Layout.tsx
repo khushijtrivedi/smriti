@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router';
+import AccountMenu from './components/AccountMenu';
 
 export default function Layout() {
   const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'));
@@ -23,6 +24,14 @@ export default function Layout() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <nav className="hidden items-center gap-5 text-sm text-stone-600 sm:flex dark:text-stone-300">
+            <Link to="/foundations" className="hover:text-stone-900 dark:hover:text-stone-50">
+              Foundations
+            </Link>
+            <Link to="/patterns" className="hover:text-stone-900 dark:hover:text-stone-50">
+              Patterns
+            </Link>
+          </nav>
           <Link
             to="/upload"
             className="rounded-full bg-stone-800 px-4 py-1.5 text-sm text-stone-50 hover:bg-stone-700 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-stone-300"
@@ -47,15 +56,7 @@ export default function Layout() {
             )}
           </button>
 
-          <button
-            aria-label="Account"
-            className="grid h-9 w-9 place-items-center rounded-full bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700"
-          >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 21a8 8 0 0 1 16 0" />
-            </svg>
-          </button>
+          {import.meta.env.VITE_AUTH_ENABLED === 'true' && <AccountMenu />}
         </div>
       </header>
 
