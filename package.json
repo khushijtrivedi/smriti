@@ -2,7 +2,8 @@
   "name": "smriti",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @smriti/web dev",
+    "dev": "pnpm --parallel --filter @smriti/api --filter @smriti/web dev",
+    "db:up": "docker compose up -d",
     "build": "pnpm --filter @smriti/web build",
     "test": "pnpm --filter @smriti/parser test"
   }
